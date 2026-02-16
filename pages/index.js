@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Calendar, Clock, FileText, Plus, Trash2, Check, AlertCircle } from 'lucide-react';
+import { Heart, Calendar, Clock, FileText, Plus, Trash2, Check, AlertCircle, Download, Info } from 'lucide-react';
 
 export default function PetCareApp() {
   const [isLicensed, setIsLicensed] = useState(false);
@@ -10,6 +10,7 @@ export default function PetCareApp() {
   const [careLog, setCareLog] = useState([]);
   const [dietLog, setDietLog] = useState([]);
   const [sleepLog, setSleepLog] = useState([]);
+  const [checklistLog, setChecklistLog] = useState([]);
   
   const [profileForm, setProfileForm] = useState({
     name: '', type: '', age: '', breed: '', firstTime: ''
@@ -52,11 +53,13 @@ export default function PetCareApp() {
     const care = localStorage.getItem('careLog');
     const diet = localStorage.getItem('dietLog');
     const sleep = localStorage.getItem('sleepLog');
+    const checklist = localStorage.getItem('checklistLog');
     
     if (profile) setPetProfile(JSON.parse(profile));
     if (care) setCareLog(JSON.parse(care));
     if (diet) setDietLog(JSON.parse(diet));
     if (sleep) setSleepLog(JSON.parse(sleep));
+    if (checklist) setChecklistLog(JSON.parse(checklist));
   };
 
   const saveData = () => {
@@ -64,73 +67,325 @@ export default function PetCareApp() {
     localStorage.setItem('careLog', JSON.stringify(careLog));
     localStorage.setItem('dietLog', JSON.stringify(dietLog));
     localStorage.setItem('sleepLog', JSON.stringify(sleepLog));
+    localStorage.setItem('checklistLog', JSON.stringify(checklistLog));
   };
 
   useEffect(() => {
     if (isLicensed) saveData();
-  }, [petProfile, careLog, dietLog, sleepLog, isLicensed]);
+  }, [petProfile, careLog, dietLog, sleepLog, checklistLog, isLicensed]);
 
   const petTypes = {
     dog: {
       name: 'Dog',
-      facts: 'Dogs are social pack animals that thrive on companionship and routine.',
-      dos: ['Daily exercise (30-120 min depending on breed)', 'Regular training and mental stimulation', 'Dental care', 'Socialization with other dogs'],
-      donts: ['Leave alone for extended periods', 'Feed chocolate, grapes, onions, or xylitol', 'Skip vaccinations', 'Ignore behavioral issues'],
-      diet: 'High-quality dog food appropriate for age and size. Feed 1-2 times daily. Always provide fresh water.',
-      habitat: 'Safe indoor space with comfortable bed, outdoor access for exercise, secure fencing if yard access.',
-      enclosure: 'Crate for training (optional), bed, food/water bowls, toys, collar, leash',
-      vet: 'General veterinarian or canine specialist'
+      emoji: '🐕',
+      facts: 'Dogs are social pack animals that thrive on companionship and routine. They require daily physical exercise, mental stimulation, and consistent training. According to the American Veterinary Medical Association (AVMA), proper socialization during puppyhood is crucial for developing well-adjusted adult dogs.',
+      dos: [
+        'Provide daily exercise: 30-120 minutes depending on breed and age',
+        'Regular training using positive reinforcement methods',
+        'Daily dental care - brush teeth or provide dental chews',
+        'Socialize with other dogs and people from puppyhood',
+        'Annual vet exams including blood work after age 7',
+        'Keep identification tags and microchip updated',
+        'Provide mental stimulation with puzzle toys and training',
+        'Maintain consistent feeding schedule'
+      ],
+      donts: [
+        'Never leave alone for more than 8-10 hours regularly',
+        'Never feed chocolate, grapes, raisins, onions, garlic, xylitol, macadamia nuts',
+        'Never skip annual vaccinations (rabies, distemper, parvovirus)',
+        'Never use punishment-based training methods',
+        'Never leave in hot cars (even for minutes)',
+        'Never allow access to toxic plants (lilies, sago palm, azaleas)',
+        'Never ignore behavioral changes - may indicate health issues'
+      ],
+      diet: 'High-quality dog food appropriate for life stage (puppy, adult, senior) and size. Feed 1-2 times daily for adults. Puppies need 3-4 small meals. Avoid table scraps. Fresh water must be available 24/7. Adjust portions based on body condition score.',
+      habitat: 'Safe indoor living space with comfortable bed away from drafts. Access to secure outdoor area for bathroom breaks and exercise. Temperature range: 68-78°F. Remove hazards like electrical cords, toxic plants, small objects.',
+      enclosure: 'Properly fitted collar with ID tag, harness for walks, 4-6 foot leash, food and water bowls (stainless steel recommended), crate for training (optional), comfortable bed, age-appropriate toys (chew toys, interactive toys), grooming supplies',
+      vet: 'General veterinarian or canine specialist. Annual exams, vaccinations every 1-3 years based on vaccine type, heartworm prevention year-round, flea/tick prevention, dental cleanings as recommended',
+      lifespan: '10-13 years average (varies by breed)',
+      temperature: '101-102.5°F normal body temperature',
+      supplies: ['Premium dog food', 'Food/water bowls', 'Collar and leash', 'ID tags', 'Crate', 'Bed', 'Toys', 'Grooming tools', 'First aid kit', 'Poop bags', 'Nail clippers']
     },
     cat: {
       name: 'Cat',
-      facts: 'Cats are independent but affectionate animals that require mental stimulation and vertical space.',
-      dos: ['Provide scratching posts', 'Clean litter box daily', 'Play interactive games daily', 'Regular grooming for long-haired breeds'],
-      donts: ['Declaw (harmful procedure)', 'Feed dog food or human food regularly', 'Use harsh discipline', 'Skip annual check-ups'],
-      diet: 'High-protein cat food. Feed 2-3 times daily. Wet food recommended for hydration.',
-      habitat: 'Indoor environment with vertical climbing spaces, hiding spots, window access for bird watching.',
-      enclosure: 'Litter box, scratching posts, cat tree, food/water bowls, toys, bed',
-      vet: 'General veterinarian or feline specialist'
+      emoji: '🐈',
+      facts: 'Cats are independent but affectionate animals requiring mental stimulation and vertical space. They are obligate carnivores with specific dietary needs. Indoor cats live significantly longer than outdoor cats (12-18 years vs 2-5 years according to AVMA guidelines).',
+      dos: [
+        'Provide multiple scratching posts (vertical and horizontal)',
+        'Clean litter box daily, completely change weekly',
+        'Play interactive games 15-30 minutes daily',
+        'Brush regularly, especially long-haired breeds',
+        'Provide vertical spaces (cat trees, shelves)',
+        'Keep indoors or provide secure outdoor enclosure',
+        'Annual wellness exams including blood work after age 7',
+        'Feed high-protein, meat-based diet'
+      ],
+      donts: [
+        'Never declaw - it\'s painful amputation of toe bones',
+        'Never feed dog food or vegetarian diet - cats need taurine',
+        'Never use harsh discipline - causes fear and stress',
+        'Never skip litter box cleaning - can cause medical issues',
+        'Never feed milk - most cats are lactose intolerant',
+        'Never leave toxic plants accessible (lilies are deadly)',
+        'Never allow access to string, rubber bands, or small objects'
+      ],
+      diet: 'High-protein, meat-based cat food (wet food recommended for hydration). Feed 2-3 small meals daily. Cats need taurine, an essential amino acid. Avoid fish-only diets. Fresh water daily in multiple locations.',
+      habitat: 'Indoor environment with cat trees, window perches, hiding spots. Litter box in quiet area (1 per cat plus 1 extra). Temperature: 68-78°F. Safe outdoor enclosure optional (catio).',
+      enclosure: 'Litter box (1 per cat + 1), unscented litter, scratching posts, cat tree, window perches, food/water bowls (separate locations), interactive toys, hiding boxes, brush/comb',
+      vet: 'General veterinarian or feline specialist. Annual exams, FVRCP and rabies vaccines, FeLV/FIV testing, dental cleanings, parasite prevention',
+      lifespan: '12-18 years indoor, 2-5 years outdoor',
+      temperature: '100.5-102.5°F normal body temperature',
+      supplies: ['Premium cat food (wet + dry)', 'Multiple water bowls', 'Litter boxes', 'Litter', 'Scratching posts', 'Cat tree', 'Toys', 'Brush', 'Nail clippers', 'Carrier']
     },
     bird: {
-      name: 'Bird',
-      facts: 'Birds are highly intelligent, social creatures requiring daily interaction and mental enrichment.',
-      dos: ['Provide varied diet with fruits and vegetables', 'Allow supervised out-of-cage time', 'Rotate toys regularly', 'Maintain consistent sleep schedule (10-12 hours)'],
-      donts: ['Use non-stick cookware (toxic fumes)', 'Keep in kitchen area', 'Expose to strong scents or smoke', 'Leave in direct sunlight without shade'],
-      diet: 'Species-specific pellets, fresh fruits/vegetables, occasional seeds. Avoid avocado, chocolate, salt.',
-      habitat: 'Spacious cage away from drafts and direct sun, toys, perches of varying sizes.',
-      enclosure: 'Large cage (width > height), multiple perches, toys, food/water dishes, cuttlebone, bird bath',
-      vet: 'Avian veterinarian (specialized in birds)'
+      name: 'Bird (Parakeet/Cockatiel)',
+      emoji: '🦜',
+      facts: 'Birds are highly intelligent, social creatures requiring daily interaction and mental enrichment. They can live 10-30+ years depending on species. Birds are prey animals and hide illness, so observing behavior daily is critical.',
+      dos: [
+        'Provide species-appropriate pellets as base diet',
+        'Offer fresh vegetables and fruits daily (15-20% of diet)',
+        'Allow supervised out-of-cage time (minimum 2-3 hours daily)',
+        'Rotate toys weekly to prevent boredom',
+        'Maintain 10-12 hours dark, quiet sleep time',
+        'Provide perches of varying diameters and materials',
+        'Schedule annual avian vet exams',
+        'Socialize and talk to your bird daily'
+      ],
+      donts: [
+        'Never use non-stick cookware (PTFE/Teflon fumes are deadly)',
+        'Never keep in kitchen - fumes, steam are dangerous',
+        'Never feed avocado, chocolate, salt, caffeine, alcohol',
+        'Never use aerosol sprays or scented candles near birds',
+        'Never leave in direct sunlight without shade option',
+        'Never keep in drafty areas or near AC/heating vents',
+        'Never house different species together initially'
+      ],
+      diet: 'Species-specific pellets (70-80%), fresh vegetables (15-20%), limited fruits (5%), occasional seeds. Remove uneaten fresh food after 2-3 hours. Cuttlebone or mineral block for calcium.',
+      habitat: 'Cage away from drafts, direct sun, kitchen. Minimum cage: budgie 18x18x18", cockatiel 20x20x24". Bar spacing: budgie ½", cockatiel ¾". Temperature: 65-80°F. Humidity: 30-50%.',
+      enclosure: 'Appropriately sized cage, multiple perches (natural wood, varying sizes), stainless steel food/water dishes, cuttlebone, toys (foraging, chewing), cover for night, bird bath, play gym',
+      vet: 'Certified Avian Veterinarian. Annual exam, nail/beak trim as needed, fecal testing, blood work for older birds',
+      lifespan: 'Parakeet: 5-10 years, Cockatiel: 15-20 years, Parrot: 20-80 years',
+      temperature: '105-107°F normal body temperature',
+      supplies: ['Pellet food', 'Cage', 'Perches', 'Food/water dishes', 'Toys', 'Cuttlebone', 'Cage cover', 'Play stand', 'Cleaning supplies']
     },
     rabbit: {
       name: 'Rabbit',
-      facts: 'Rabbits are social, intelligent animals that require space to hop and explore.',
-      dos: ['Provide unlimited hay', 'Bunny-proof living areas', 'Handle gently and support hindquarters', 'Spay/neuter for health and behavior'],
-      donts: ['Keep in small cages 24/7', 'Feed iceberg lettuce or processed foods', 'Bathe (unless medically necessary)', 'Pick up by ears'],
-      diet: 'Unlimited timothy hay, daily fresh vegetables, limited pellets, occasional fruit treats.',
-      habitat: 'Large exercise pen or free-roam space, hiding spots, safe chewing materials.',
-      enclosure: 'Large pen or room access, litter box, hay rack, water bottle/bowl, hiding house, chew toys',
-      vet: 'Exotic animal veterinarian with rabbit experience'
+      emoji: '🐰',
+      facts: 'Rabbits are social, intelligent lagomorphs (not rodents) requiring companionship and space. They can be litter trained. Rabbits have continuously growing teeth requiring constant hay access. Never bathe rabbits unless medically necessary.',
+      dos: [
+        'Provide unlimited timothy hay (80-90% of diet)',
+        'Bunny-proof living areas - cover cords, remove toxins',
+        'Handle gently, support hindquarters always',
+        'Spay/neuter by 6 months (health and behavior benefits)',
+        'Provide 3-4 hours daily exercise outside enclosure',
+        'Check teeth regularly for overgrowth',
+        'Brush weekly, daily during molt',
+        'Pair with another rabbit (spayed/neutered)'
+      ],
+      donts: [
+        'Never keep in small cages 24/7 - need minimum 12 sq ft',
+        'Never feed iceberg lettuce, beans, potato, rhubarb',
+        'Never bathe unless medically necessary (can cause shock)',
+        'Never pick up by ears - causes severe injury',
+        'Never use cedar or pine bedding - toxic fumes',
+        'Never leave unsupervised with other pets',
+        'Never overfeed pellets - leads to obesity'
+      ],
+      diet: 'Unlimited timothy or grass hay (main diet), 1-2 cups fresh vegetables daily (romaine, cilantro, parsley), ¼ cup pellets per 5 lbs body weight, limited fruit treats. Always fresh water.',
+      habitat: 'Large exercise pen (minimum 4x4 feet) or free-roam safe room. Litter box with paper-based litter. Temperature: 60-70°F. Provide hiding houses and tunnels. Rabbit-proof all areas.',
+      enclosure: 'X-pen or large cage (minimum 4x4 feet), litter box, hay rack, heavy ceramic bowls, water bottle or bowl, hiding house, safe chew toys (willow, apple wood), fleece blankets',
+      vet: 'Exotic animal veterinarian with rabbit experience. Annual exam, spay/neuter, dental checks, GI stasis watch',
+      lifespan: '8-12 years',
+      temperature: '101.3-103.1°F normal body temperature',
+      supplies: ['Timothy hay', 'Pellets', 'Fresh veggies', 'Exercise pen', 'Litter box', 'Paper bedding', 'Hay rack', 'Water bowl', 'Hiding house', 'Chew toys']
     },
-    reptile: {
-      name: 'Reptile',
-      facts: 'Reptiles are cold-blooded and require specific temperature and humidity levels to thrive.',
-      dos: ['Maintain proper temperature gradient', 'Provide UVB lighting (for most species)', 'Monitor humidity levels', 'Handle when they\'re alert and warm'],
-      donts: ['House different species together', 'Use heat rocks', 'Overfeed', 'Neglect temperature regulation at night'],
-      diet: 'Species-specific (insects, rodents, vegetables). Research your specific reptile\'s needs.',
-      habitat: 'Temperature-controlled enclosure with heating and lighting, hiding spots, proper substrate.',
-      enclosure: 'Appropriately-sized terrarium, heating equipment, UVB light, thermometer/hygrometer, hides, water dish, substrate',
-      vet: 'Exotic animal veterinarian or reptile specialist'
+    hamster: {
+      name: 'Hamster',
+      emoji: '🐹',
+      facts: 'Hamsters are solitary, nocturnal rodents. Syrian hamsters MUST be housed alone. Dwarf hamsters sometimes tolerate same-sex pairs if introduced young. They are active primarily at night and need large cages with deep bedding for burrowing.',
+      dos: [
+        'Provide minimum 450 sq inch floor space (larger better)',
+        'Offer 6-8 inches bedding depth for burrowing',
+        'Give appropriately-sized exercise wheel (8-12" diameter)',
+        'Provide fresh vegetables 2-3 times weekly',
+        'Handle gently after they wake naturally',
+        'Spot clean daily, full clean weekly',
+        'Check cheek pouches for impacted food',
+        'Provide chew toys for teeth maintenance'
+      ],
+      donts: [
+        'Never house Syrian hamsters together - will fight to death',
+        'Never use wire-bottom cages - causes foot injuries',
+        'Never use small wheels - causes back problems',
+        'Never use cedar or pine bedding - toxic',
+        'Never place in direct sunlight',
+        'Never wake during day - causes stress',
+        'Never use hamster balls for extended time - stressful'
+      ],
+      diet: 'High-quality hamster pellets (tablespoon daily), small amounts timothy hay, occasional fresh vegetables (carrot, broccoli, cucumber), limited seeds/nuts. Fresh water daily.',
+      habitat: 'Minimum 450 square inch cage (larger better), 6-8" paper-based bedding, hide houses. Temperature: 65-75°F. Avoid drafts and direct sun.',
+      enclosure: 'Large cage or bin cage (minimum 450 sq in), 6-8" paper bedding, appropriately-sized wheel, hideouts, water bottle, food dish, chew toys, exercise items',
+      vet: 'Exotic veterinarian familiar with hamsters. Health checks as needed, watch for wet tail, tumors',
+      lifespan: '2-3 years',
+      temperature: '97-100°F normal body temperature',
+      supplies: ['Hamster pellets', 'Paper bedding', 'Large cage', 'Exercise wheel', 'Hideout', 'Water bottle', 'Food dish', 'Chew toys', 'Sand bath']
+    },
+    guineapig: {
+      name: 'Guinea Pig',
+      emoji: '🐹',
+      facts: 'Guinea pigs are social herbivores that must live in pairs or groups. They cannot produce their own Vitamin C and need daily supplementation. They vocalize extensively and require lots of space despite small size.',
+      dos: [
+        'House in pairs or groups (same sex or neutered)',
+        'Provide unlimited timothy hay always',
+        'Feed 1 cup fresh vegetables daily high in Vitamin C',
+        'Offer vitamin C supplement daily (10-50mg)',
+        'Provide minimum 7.5 sq ft for one, 10.5 sq ft for two',
+        'Clean cage 2-3 times weekly',
+        'Trim nails monthly',
+        'Provide hidey houses for each guinea pig'
+      ],
+      donts: [
+        'Never house alone - they need companionship',
+        'Never use exercise wheels or balls - unsafe',
+        'Never skip vitamin C - causes scurvy',
+        'Never use wire bottom cages - causes bumblefoot',
+        'Never bathe frequently - causes skin issues',
+        'Never feed iceberg lettuce, dairy, or meat',
+        'Never house with rabbits - different needs, injuries'
+      ],
+      diet: 'Unlimited timothy hay (most important), 1 cup fresh vegetables daily (bell peppers, kale, romaine), 1/8 cup pellets fortified with vitamin C, limited fruit. Fresh water daily.',
+      habitat: 'Minimum 7.5 sq ft for one (larger better), solid bottom cage, 2-3" paper bedding. Temperature: 65-75°F. Avoid drafts. Multiple hide houses.',
+      enclosure: 'Large C&C cage or enclosure (7.5+ sq ft), paper bedding, multiple hideouts, hay rack, ceramic food bowls, water bottle, fleece bedding (optional)',
+      vet: 'Exotic veterinarian. Annual wellness exam, nail trims, monitor for URI, scurvy, dental issues',
+      lifespan: '5-7 years',
+      temperature: '99-103°F normal body temperature',
+      supplies: ['Timothy hay', 'Guinea pig pellets', 'Fresh vegetables', 'Large cage', 'Bedding', 'Hideouts', 'Food bowls', 'Water bottle', 'Vitamin C drops']
     },
     fish: {
-      name: 'Fish',
-      facts: 'Fish require stable water conditions and species-appropriate tank mates.',
-      dos: ['Cycle tank before adding fish', 'Test water parameters weekly', 'Perform regular water changes (25% weekly)', 'Research species compatibility'],
-      donts: ['Overstock the tank', 'Overfeed', 'Use soap or chemicals near tank', 'Add fish too quickly'],
-      diet: 'Species-specific flakes/pellets, occasional frozen or live food. Feed small amounts 1-2 times daily.',
-      habitat: 'Appropriately-sized filtered tank with heater (for tropical fish), proper lighting cycle.',
-      enclosure: 'Tank (minimum 10 gallons for most species), filter, heater, thermometer, decorations, plants, water test kit',
-      vet: 'Aquatic veterinarian or exotic animal vet with fish experience'
+      name: 'Freshwater Fish',
+      emoji: '🐠',
+      facts: 'Tropical fish require stable water conditions and cycling before adding fish. The nitrogen cycle takes 4-6 weeks. Larger tanks (20+ gallons) are easier for beginners. Test water parameters weekly. Most tropical fish need 75-80°F water.',
+      dos: [
+        'Cycle tank 4-6 weeks before adding fish',
+        'Test water parameters weekly (ammonia, nitrite, nitrate, pH)',
+        'Perform 20-25% water changes weekly',
+        'Research species compatibility before mixing',
+        'Quarantine new fish 2-4 weeks before adding to main tank',
+        'Feed small amounts 1-2 times daily',
+        'Maintain temperature 75-80°F for tropical',
+        'Use water conditioner to remove chlorine/chloramines'
+      ],
+      donts: [
+        'Never add untreated tap water',
+        'Never overstock tank - research bioload',
+        'Never overfeed - causes ammonia spikes',
+        'Never clean with soap/chemicals',
+        'Never add fish during cycling period',
+        'Never mix aggressive with peaceful species',
+        'Never skip water testing',
+        'Never replace all water at once'
+      ],
+      diet: 'Species-specific flakes/pellets, frozen foods (bloodworms, brine shrimp), blanched vegetables for herbivores. Feed only what fish eat in 2-3 minutes, 1-2 times daily.',
+      habitat: 'Minimum 20 gallon tank for beginners. Cycled filter, heater (75-80°F), thermometer, lighting (8-10 hours daily), air pump (optional). Decorations, plants.',
+      enclosure: 'Aquarium (20+ gallons recommended), filter, heater, thermometer, lighting, substrate (gravel/sand), decorations, live or artificial plants, water test kit, siphon, net',
+      vet: 'Aquatic veterinarian or fish-experienced exotic vet. Often requires home treatment based on symptoms and water testing',
+      lifespan: 'Varies by species: Goldfish 10-30 years, Betta 3-5 years, Tetras 5-10 years',
+      temperature: 'Varies by species (Tropical: 75-80°F, Goldfish: 65-72°F)',
+      supplies: ['Tank (20+ gallons)', 'Filter', 'Heater', 'Thermometer', 'Light', 'Substrate', 'Decorations', 'Water test kit', 'Conditioner', 'Fish food', 'Net', 'Siphon']
+    },
+    reptile: {
+      name: 'Reptile (Leopard Gecko)',
+      emoji: '🦎',
+      facts: 'Reptiles are cold-blooded and require specific temperature gradients. Leopard geckos are beginner-friendly, nocturnal, and don\'t require UVB lighting. Always handle reptiles when they\'re warm and alert, never when cold or during shed.',
+      dos: [
+        'Provide temperature gradient (hot: 88-92°F, cool: 75-80°F)',
+        'Use heat mat with thermostat (never heat rocks)',
+        'Offer proper hiding spots in hot and cool zones',
+        'Dust insects with calcium + D3 powder',
+        'Provide shallow water dish, change daily',
+        'Handle gently after warming up',
+        'Monitor shedding - provide humid hide',
+        'Keep detailed temperature and feeding logs'
+      ],
+      donts: [
+        'Never house different species together',
+        'Never use heat rocks - cause severe burns',
+        'Never feed wild-caught insects - parasites',
+        'Never skip calcium supplementation',
+        'Never use loose substrate for young geckos - impaction risk',
+        'Never handle during shed period',
+        'Never allow temperature drops below 65°F',
+        'Never keep in glass tank without proper heating'
+      ],
+      diet: 'Live insects (crickets, mealworms, dubia roaches) dusted with calcium powder with D3. Feed juveniles daily, adults 3-4 times weekly. Gut-load insects before feeding. Fresh water daily.',
+      habitat: '20-gallon long tank minimum for one gecko. Paper towel or tile substrate. Under-tank heating pad with thermostat. Three hides (hot, cool, humid). Temperature gradient required.',
+      enclosure: '20+ gallon tank, under-tank heater, thermostat, three hiding spots, shallow water dish, calcium dish, paper towel/tile substrate, thermometer (hot and cool ends)',
+      vet: 'Exotic/reptile veterinarian. Annual exam, fecal parasite testing, monitor for metabolic bone disease, impaction',
+      lifespan: '10-20 years',
+      temperature: 'Requires temperature gradient: 88-92°F hot side, 75-80°F cool side',
+      supplies: ['Tank (20+ gal)', 'Heat mat', 'Thermostat', 'Hides', 'Water dish', 'Substrate', 'Thermometers', 'Calcium powder', 'Live insects', 'Feeding tongs']
     }
+  };
+
+  const templates = {
+    dailyRoutine: {
+      title: 'Daily Care Routine',
+      items: ['Morning feeding', 'Fresh water', 'Exercise/play time', 'Litter box/cage spot check', 'Evening feeding', 'Medications (if any)', 'Grooming check', 'Bedtime routine']
+    },
+    bedtimeRoutine: {
+      title: 'Bedtime Routine',
+      items: ['Final potty break', 'Check water availability', 'Turn off lights/cover cage', 'Ensure proper temperature', 'Check all enclosures secured', 'Quiet time before sleep']
+    },
+    eatingRoutine: {
+      title: 'Feeding Schedule',
+      items: ['Morning meal (time & amount)', 'Afternoon meal (if applicable)', 'Evening meal (time & amount)', 'Treats (type & frequency)', 'Fresh water changes', 'Food bowl cleaning']
+    },
+    supplyChecklist: {
+      title: 'Pet Supply Checklist',
+      items: ['Food (appropriate type)', 'Food & water bowls', 'Bed/hiding spots', 'Toys', 'Grooming supplies', 'Cleaning supplies', 'First aid kit', 'Carrier', 'Identification (collar/tag)', 'Veterinarian contact info']
+    },
+    firstTimerChecklist: {
+      title: 'First-Time Pet Owner Checklist',
+      items: [
+        '✓ Research your pet\'s specific needs',
+        '✓ Find exotic/specialized vet before bringing pet home',
+        '✓ Pet-proof your home',
+        '✓ Purchase all supplies in advance',
+        '✓ Set up habitat/enclosure before arrival',
+        '✓ Plan feeding schedule',
+        '✓ Prepare emergency contact list',
+        '✓ Budget for routine and emergency care',
+        '✓ Learn proper handling techniques',
+        '✓ Understand common health issues for species',
+        '✓ Join species-specific online communities',
+        '✓ Schedule first vet appointment'
+      ]
+    },
+    vetVisit: {
+      title: 'Veterinary Visit Checklist',
+      items: ['Annual exam scheduled', 'Vaccinations up to date', 'Parasite prevention current', 'Dental check performed', 'Weight recorded', 'Discussed any concerns', 'Refilled medications', 'Scheduled next appointment']
+    }
+  };
+
+  const downloadTemplate = (templateName) => {
+    const template = templates[templateName];
+    const petName = petProfile ? petProfile.name : 'Your Pet';
+    
+    let content = `${template.title}\nPet: ${petName}\nDate: ${new Date().toLocaleDateString()}\n\n`;
+    template.items.forEach((item, index) => {
+      content += `${index + 1}. ${item}\n   [ ] Completed\n\n`;
+    });
+    content += '\n\nNotes:\n_______________________\n_______________________\n_______________________\n';
+    
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${template.title.replace(/\s+/g, '_')}_${petName.replace(/\s+/g, '_')}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   if (!isLicensed) {
@@ -265,7 +520,7 @@ export default function PetCareApp() {
                 >
                   <option value="">Select pet type...</option>
                   {Object.keys(petTypes).map(type => (
-                    <option key={type} value={type}>{petTypes[type].name}</option>
+                    <option key={type} value={type}>{petTypes[type].emoji} {petTypes[type].name}</option>
                   ))}
                 </select>
               </div>
@@ -286,7 +541,7 @@ export default function PetCareApp() {
                   type="text"
                   value={profileForm.age}
                   onChange={(e) => setProfileForm({...profileForm, age: e.target.value})}
-                  placeholder="e.g., 2 years"
+                  placeholder="e.g., 2 years, 6 months"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg" 
                 />
               </div>
@@ -332,10 +587,12 @@ export default function PetCareApp() {
                   setCareLog([]);
                   setDietLog([]);
                   setSleepLog([]);
+                  setChecklistLog([]);
                   localStorage.removeItem('petProfile');
                   localStorage.removeItem('careLog');
                   localStorage.removeItem('dietLog');
                   localStorage.removeItem('sleepLog');
+                  localStorage.removeItem('checklistLog');
                 }
               }}
               className="text-sm text-gray-600 hover:text-gray-800"
@@ -348,17 +605,28 @@ export default function PetCareApp() {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">{petProfile.name}</h2>
-          <p className="text-gray-600">{petInfo.name} • {petProfile.age} {petProfile.breed && `• ${petProfile.breed}`}</p>
-          {petProfile.firstTime && (
-            <div className="mt-2 inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-              First-time owner
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <span className="text-3xl">{petInfo.emoji}</span>
+                {petProfile.name}
+              </h2>
+              <p className="text-gray-600">{petInfo.name} • {petProfile.age} {petProfile.breed && `• ${petProfile.breed}`}</p>
+              {petProfile.firstTime && (
+                <div className="mt-2 inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                  First-time owner
+                </div>
+              )}
             </div>
-          )}
+            <div className="text-right text-sm text-gray-600">
+              <p>Lifespan: {petInfo.lifespan}</p>
+              <p>Body Temp: {petInfo.temperature}</p>
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {['home', 'care', 'diet', 'sleep'].map(view => (
+          {['home', 'care', 'diet', 'sleep', 'templates'].map(view => (
             <button
               key={view}
               onClick={() => setCurrentView(view)}
@@ -377,12 +645,12 @@ export default function PetCareApp() {
           <div className="space-y-6">
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4">About {petInfo.name}s</h3>
-              <p className="text-gray-700 mb-4">{petInfo.facts}</p>
+              <p className="text-gray-700 leading-relaxed">{petInfo.facts}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-green-700 mb-4">✓ Do's</h3>
-              <ul className="space-y-2">
+              <h3 className="text-xl font-bold text-green-700 mb-4">✓ Essential Do's</h3>
+              <ul className="space-y-3">
                 {petInfo.dos.map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -393,8 +661,8 @@ export default function PetCareApp() {
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-red-700 mb-4">✗ Don'ts</h3>
-              <ul className="space-y-2">
+              <h3 className="text-xl font-bold text-red-700 mb-4">✗ Critical Don'ts</h3>
+              <ul className="space-y-3">
                 {petInfo.donts.map((item, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -405,23 +673,34 @@ export default function PetCareApp() {
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Diet</h3>
-              <p className="text-gray-700">{petInfo.diet}</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Diet & Nutrition</h3>
+              <p className="text-gray-700 leading-relaxed">{petInfo.diet}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4">Habitat Requirements</h3>
-              <p className="text-gray-700">{petInfo.habitat}</p>
+              <p className="text-gray-700 leading-relaxed">{petInfo.habitat}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Enclosure Essentials</h3>
-              <p className="text-gray-700">{petInfo.enclosure}</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Essential Supplies</h3>
+              <p className="text-gray-700 mb-3 leading-relaxed">{petInfo.enclosure}</p>
+              <div className="mt-4">
+                <h4 className="font-semibold text-gray-800 mb-2">Shopping List:</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {petInfo.supplies.map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm text-gray-700">
+                      <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4">Veterinary Care</h3>
-              <p className="text-gray-700">{petInfo.vet}</p>
+              <p className="text-gray-700 leading-relaxed">{petInfo.vet}</p>
             </div>
           </div>
         )}
@@ -440,7 +719,7 @@ export default function PetCareApp() {
                   value={careActivity}
                   onChange={(e) => setCareActivity(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && addCareLog()}
-                  placeholder="Add care activity (e.g., Morning walk, Brush teeth)"
+                  placeholder="Add care activity (e.g., Morning walk, Fresh water)"
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
                 />
                 <button 
@@ -454,7 +733,7 @@ export default function PetCareApp() {
 
             <div className="space-y-2">
               {careLog.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No care activities logged yet</p>
+                <p className="text-gray-500 text-center py-8">No care activities logged yet. Add your daily tasks above!</p>
               ) : (
                 careLog.map(log => (
                   <div key={log.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
@@ -501,7 +780,7 @@ export default function PetCareApp() {
                   value={dietAmount}
                   onChange={(e) => setDietAmount(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && addDietLog()}
-                  placeholder="Amount (e.g., 1 cup, 50g)"
+                  placeholder="Amount (e.g., 1 cup, 50g, 5 crickets)"
                   className="flex-1 min-w-48 px-4 py-2 border border-gray-300 rounded-lg"
                 />
                 <button 
@@ -515,7 +794,7 @@ export default function PetCareApp() {
 
             <div className="space-y-2">
               {dietLog.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No meals logged yet</p>
+                <p className="text-gray-500 text-center py-8">No meals logged yet. Track your pet's diet!</p>
               ) : (
                 dietLog.map(log => (
                   <div key={log.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
@@ -564,7 +843,7 @@ export default function PetCareApp() {
 
             <div className="space-y-2">
               {sleepLog.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No sleep data logged yet</p>
+                <p className="text-gray-500 text-center py-8">No sleep data logged yet. Monitor rest patterns!</p>
               ) : (
                 sleepLog.map(log => (
                   <div key={log.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
@@ -578,6 +857,44 @@ export default function PetCareApp() {
                   </div>
                 ))
               )}
+            </div>
+          </div>
+        )}
+
+        {currentView === 'templates' && (
+          <div className="space-y-4">
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Download className="text-purple-600" />
+                Downloadable Care Templates
+              </h3>
+              <p className="text-gray-600 mb-6">Click any template to download as a text file. Print or edit as needed!</p>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                {Object.entries(templates).map(([key, template]) => (
+                  <div key={key} className="border border-gray-200 rounded-lg p-4 hover:border-purple-600 transition">
+                    <h4 className="font-bold text-gray-800 mb-2">{template.title}</h4>
+                    <ul className="text-sm text-gray-600 mb-4 space-y-1">
+                      {template.items.slice(0, 3).map((item, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <Check className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                      {template.items.length > 3 && (
+                        <li className="text-gray-400">...and {template.items.length - 3} more items</li>
+                      )}
+                    </ul>
+                    <button
+                      onClick={() => downloadTemplate(key)}
+                      className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition flex items-center justify-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download Template
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
