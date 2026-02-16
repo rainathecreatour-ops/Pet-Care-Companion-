@@ -75,6 +75,223 @@ export default function PetCareApp() {
   }, [petProfile, careLog, dietLog, sleepLog, checklistLog, isLicensed]);
 
   const petTypes = {
+    ferret: {
+      name: 'Ferret',
+      emoji: '🦡',
+      facts: 'Ferrets are members of the Mustelidae family (weasels, otters) and are obligate carnivores. They sleep 14-16 hours daily but are highly active when awake. They are social, intelligent, and playful but require significant care and commitment. Illegal in some areas (California, Hawaii, NYC).',
+      dos: [
+        'Provide multi-level cage minimum 24"L x 24"W x 36"H',
+        'Feed high-protein (30-35%) high-fat (15-20%) ferret food',
+        'Allow supervised out-of-cage time 2-4 hours daily',
+        'Ferret-proof your home completely - they fit anywhere their head fits',
+        'Annual vaccinations: canine distemper and rabies (required in most states)',
+        'Monitor for 30 minutes post-vaccination (6% reaction rate)',
+        'Provide litter box training starting young',
+        'Schedule annual vet exams, bi-annual after age 5'
+      ],
+      donts: [
+        'Never feed fruits, vegetables, grains - they cannot digest them',
+        'Never use latex rubber toys - intestinal blockages are common',
+        'Never leave unsupervised with children or other pets',
+        'Never expose to temperatures above 80°F - causes heat stroke',
+        'Never bathe more than monthly - strips skin oils, increases odor',
+        'Never give human antibiotics (penicillin, erythromycin) - fatal',
+        'Never skip ferret-proofing - they escape easily'
+      ],
+      diet: 'High-quality ferret or kitten kibble (30-35% protein, 15-20% fat). Food available 24/7 due to high metabolism. Occasional treats: cooked meat, meat baby food. NO fruits, vegetables, grains, or dairy.',
+      habitat: 'Wire cage minimum 24"x24"x36" with solid floors, ramps, hammocks. Room temperature under 80°F. Dark sleeping enclosure. Litter box in corner. Exercise area for daily playtime.',
+      enclosure: 'Large multi-level cage, solid flooring, hammocks/slings, litter box, ferret-safe litter, food/water bowls, cloth bedding, tunnels, safe toys (hard plastic/metal)',
+      vet: 'Exotic veterinarian. Canine distemper vaccine (8, 12, 16 weeks, then annual), Rabies (12 weeks, then annual), monthly heartworm/flea prevention, annual dental cleanings',
+      lifespan: '7-10 years',
+      temperature: '100-104°F normal body temperature',
+      supplies: ['High-protein ferret food', 'Multi-level cage', 'Hammock', 'Litter box', 'Safe toys', 'Food bowls', 'Nail clippers', 'Ferret shampoo', 'Carrier']
+    },
+    chinchilla: {
+      name: 'Chinchilla',
+      emoji: '🐭',
+      facts: 'Chinchillas are from the Andes Mountains and adapted to cool, dry climates. They have 60 hairs per follicle (softest fur of any animal) and exhibit "fur slip" when grabbed. Crepuscular (active dawn/dusk). Can live 10-20 years with proper care.',
+      dos: [
+        'Provide dust baths 2-3 times weekly using chinchilla-specific dust',
+        'Maintain temperature 60-70°F, never exceed 80°F',
+        'Offer unlimited grass hay (timothy, meadow, orchard)',
+        'Feed 1-2 tablespoons quality chinchilla pellets daily',
+        'Provide multi-level cage minimum 24"W x 24"D x 24"H',
+        'Give chew toys for continuously growing teeth',
+        'Allow 1-2 hours daily supervised playtime',
+        'Annual exotic vet exams including dental checks'
+      ],
+      donts: [
+        'Never bathe in water - fur takes too long to dry, causes skin issues',
+        'Never expose to temperatures above 80°F - heat stroke is fatal',
+        'Never feed nuts, seeds, dried fruit - too high in sugar/fat',
+        'Never use cedar or pine bedding - toxic',
+        'Never house with rabbits - Pasteurella bacteria is fatal to chinchillas',
+        'Never give human antibiotics - many are toxic to rodents',
+        'Never leave dust bath in cage - causes eye irritation'
+      ],
+      diet: 'Unlimited grass hay (timothy, orchard), 1-2 tablespoons chinchilla pellets (18% fiber minimum, 10% protein), limited treats (plain Cheerios, rose hips, hibiscus). Fresh water daily.',
+      habitat: 'Multi-level wire cage 24"x24"x24" minimum with solid floors. Paper bedding or fleece. Temperature 60-70°F, humidity 30-50%. Dust bath container, hiding spots, ledges for jumping.',
+      enclosure: 'Large multi-level cage, solid floors, hiding houses, ledges, dust bath container, chinchilla dust, hay rack, water bottle, food bowl, chew toys (apple, willow wood)',
+      vet: 'Exotic veterinarian. Annual exam, fecal testing, dental checks. No vaccinations needed. Monitor for heat stroke, dental disease, fur problems, respiratory issues.',
+      lifespan: '10-20 years',
+      temperature: '98-100°F normal body temperature',
+      supplies: ['Grass hay', 'Chinchilla pellets', 'Dust bath container', 'Chinchilla dust', 'Multi-level cage', 'Chew toys', 'Hiding house', 'Water bottle', 'Fleece bedding']
+    },
+    rat: {
+      name: 'Rat (Pet Rat)',
+      emoji: '🐀',
+      facts: 'Rats are highly intelligent, social rodents that can learn tricks and solve puzzles. They MUST live in same-sex pairs or groups - solitary rats become depressed. They are clean, affectionate, and bond strongly with owners. Lifespan is unfortunately short at 2-3 years.',
+      dos: [
+        'House in same-sex pairs or groups minimum',
+        'Provide multi-level cage 24"L x 12"W x 12"H per rat',
+        'Offer daily handling and interaction (very social)',
+        'Feed rat-specific pellets plus fresh vegetables',
+        'Provide hammocks, tunnels, and climbing opportunities',
+        'Spot clean daily, full cage clean weekly',
+        'Give puzzle toys and training for mental stimulation',
+        'Trim nails monthly'
+      ],
+      donts: [
+        'Never house alone - they need rat companionship',
+        'Never use wire floors - causes bumblefoot',
+        'Never feed citrus to male rats - causes kidney damage',
+        'Never expose to cedar/pine - toxic fumes',
+        'Never feed chocolate, caffeine, raw beans, green potato',
+        'Never skip cage cleaning - ammonia from urine causes respiratory issues',
+        'Never use small aquariums - poor ventilation'
+      ],
+      diet: 'Quality rat pellets (lab blocks), fresh vegetables daily (leafy greens, broccoli, carrots), occasional fruits, cooked eggs, whole grain pasta. Avoid citrus for males. Fresh water daily.',
+      habitat: 'Multi-level wire cage minimum 2 cubic feet per rat. Solid or covered wire floors. Hammocks, ropes, branches. Temperature 65-75°F. Good ventilation essential.',
+      enclosure: 'Large wire cage, hammocks, hiding spots, ropes/branches, litter box (optional), food bowl, water bottle, chew toys, cardboard boxes',
+      vet: 'Exotic veterinarian. No routine vaccinations. Annual wellness check. Watch for respiratory infections (common), tumors, bumblefoot.',
+      lifespan: '2-3 years',
+      temperature: '97.6-100.6°F normal body temperature',
+      supplies: ['Rat pellets', 'Fresh vegetables', 'Large cage', 'Hammocks', 'Bedding', 'Water bottle', 'Food bowl', 'Chew toys', 'Hiding spots']
+    },
+    gerbil: {
+      name: 'Gerbil',
+      emoji: '🐹',
+      facts: 'Gerbils are desert-adapted rodents that drink very little water and rarely need cage cleaning (minimal odor). They MUST live in same-sex pairs - solitary gerbils become stressed. Active and curious, they love digging and burrowing. Native to Mongolia/China deserts.',
+      dos: [
+        'House in bonded same-sex pairs',
+        'Provide deep bedding (6-8 inches) for burrowing',
+        'Offer 10-gallon aquarium or larger tank',
+        'Feed gerbil-specific food mix',
+        'Provide chew toys for continuously growing teeth',
+        'Give dust bath 1-2 times weekly',
+        'Handle gently by scooping, never grab tail',
+        'Spot clean bedding, full change every 2-3 weeks'
+      ],
+      donts: [
+        'Never house alone - causes severe stress',
+        'Never grab or pull the tail - causes serious injury/loss',
+        'Never use wire cages - they chew through them',
+        'Never use cedar/pine bedding - respiratory toxins',
+        'Never overfeed sunflower seeds - obesity',
+        'Never house different species together',
+        'Never use small wheels - back injuries'
+      ],
+      diet: 'Gerbil-specific seed mix or pellets, small amounts fresh vegetables (carrot, broccoli), occasional fruits. Limited sunflower seeds (high fat). Fresh water daily despite low consumption.',
+      habitat: '10+ gallon glass aquarium with secure mesh lid. 6-8 inches paper bedding for burrowing. Hideouts, tunnels. Temperature 65-75°F. Low humidity.',
+      enclosure: '10-gallon+ tank, secure lid, 6-8" bedding, hideouts, tunnels, exercise wheel (8"+ diameter), chew toys, sand bath container, water bottle, food dish',
+      vet: 'Exotic veterinarian. Annual health check. No routine vaccinations. Watch for respiratory issues, overgrown teeth, tumors.',
+      lifespan: '2-4 years',
+      temperature: '98-102°F normal body temperature',
+      supplies: ['Gerbil food mix', 'Tank (10+ gal)', 'Deep bedding', 'Hideouts', 'Exercise wheel', 'Sand bath', 'Chew toys', 'Water bottle']
+    },
+    mouse: {
+      name: 'Mouse (Pet Mouse)',
+      emoji: '🐭',
+      facts: 'Mice are highly social, intelligent rodents. Females MUST live in groups (3+), males can fight so often housed alone or in neutered pairs. They are nocturnal, playful, and surprisingly affectionate. They have a strong odor that requires frequent cleaning.',
+      dos: [
+        'House female mice in groups of 3+',
+        'Provide 10+ gallon tank with secure mesh lid',
+        'Offer 1-2" bedding, spot clean every 2-3 days',
+        'Feed mouse-specific pellets plus seeds',
+        'Provide exercise wheel (5"+ diameter)',
+        'Give variety of toys and climbing structures',
+        'Handle gently and regularly for socialization',
+        'Trim nails if overgrown'
+      ],
+      donts: [
+        'Never house adult males together - they fight',
+        'Never use wire floors - foot injuries',
+        'Never feed large amounts of fatty foods',
+        'Never skip frequent cleaning - strong urine smell',
+        'Never use small aquariums - poor ventilation',
+        'Never grab by tail tip - can break off',
+        'Never expose to cedar/pine bedding'
+      ],
+      diet: 'Mouse pellets, small amounts seeds (not too many), fresh vegetables (leafy greens, carrots, peas), occasional fruits, cooked egg. Fresh water daily.',
+      habitat: '10+ gallon tank with mesh lid. 1-2" paper bedding changed frequently. Multiple hideouts. Temperature 65-75°F. Good ventilation.',
+      enclosure: 'Tank (10+ gal), mesh lid, bedding, multiple hides, exercise wheel, climbing toys, tunnels, nest material, water bottle, food dish',
+      vet: 'Exotic veterinarian. No routine vaccinations. Annual wellness check. Watch for respiratory infections, tumors, mites.',
+      lifespan: '1.5-3 years',
+      temperature: '97.7-100.8°F normal body temperature',
+      supplies: ['Mouse pellets', 'Tank', 'Bedding', 'Exercise wheel', 'Hideouts', 'Toys', 'Water bottle', 'Nesting material']
+    },
+    hedgehog: {
+      name: 'Hedgehog (African Pygmy)',
+      emoji: '🦔',
+      facts: 'Hedgehogs are insectivores (not rodents) that are solitary and nocturnal. They have 5,000-7,000 quills that stand up when scared (called "balling up"). Require consistent handling to stay friendly. Illegal in some states (CA, GA, PA, HI, NYC).',
+      dos: [
+        'House individually - they are solitary animals',
+        'Maintain temperature 72-80°F (use heat lamp if needed)',
+        'Provide solid-bottom cage minimum 4 square feet',
+        'Feed high-quality cat food or hedgehog-specific food',
+        'Offer daily handling for 30+ minutes when awake',
+        'Give weekly foot baths to remove stuck bedding',
+        'Trim nails monthly',
+        'Provide exercise wheel (12"+ diameter, solid surface)'
+      ],
+      donts: [
+        'Never house together - they fight',
+        'Never use wire wheels - broken legs common',
+        'Never let temperature drop below 65°F - can trigger hibernation attempt (fatal)',
+        'Never use cedar/pine bedding - respiratory issues',
+        'Never feed grapes, raisins, avocado - toxic',
+        'Never skip nail trims - causes mobility issues',
+        'Never use aquariums without top - they climb well'
+      ],
+      diet: 'High-quality cat food (chicken-based, 30%+ protein, 20% fat), mealworms, crickets, cooked chicken. Limited fruits/vegetables. Fresh water daily.',
+      habitat: 'Solid-bottom cage 4+ square feet. Fleece bedding or paper bedding. Temperature 72-80°F maintained. Hiding spots, tunnels. Exercise wheel essential.',
+      enclosure: 'Large cage (4+ sq ft), solid wheel (12"+), hiding spots, fleece liners, food bowl, water bottle, toys, heat source (if needed)',
+      vet: 'Exotic veterinarian. Annual exam. No routine vaccinations. Watch for obesity, mites, respiratory infections, tumors.',
+      lifespan: '3-6 years',
+      temperature: '95-98°F normal body temperature',
+      supplies: ['Cat food/hedgehog food', 'Large cage', 'Solid wheel', 'Fleece bedding', 'Hideout', 'Insects', 'Nail clippers', 'Heat lamp']
+    },
+    beardeddragon: {
+      name: 'Bearded Dragon',
+      emoji: '🦎',
+      facts: 'Bearded dragons are diurnal, omnivorous lizards from Australia. They are docile, easy to handle, and can recognize owners. They require UVB lighting and specific temperatures. "Arm waving" and "head bobbing" are normal communication behaviors.',
+      dos: [
+        'Provide 40+ gallon tank for adults (75+ gallons recommended)',
+        'Maintain basking spot 95-105°F, cool side 75-85°F',
+        'Provide UVB lighting 10-12 hours daily (replace every 6 months)',
+        'Feed variety: insects (juveniles), vegetables (adults)',
+        'Dust insects with calcium + D3 powder',
+        'Offer daily baths in shallow warm water',
+        'Handle regularly when warm and alert',
+        'Monitor weight and body condition'
+      ],
+      donts: [
+        'Never feed wild-caught insects - parasites',
+        'Never feed fireflies - highly toxic, fatal',
+        'Never use loose substrate for juveniles - impaction risk',
+        'Never skip UVB lighting - causes metabolic bone disease',
+        'Never cohabitate - they can be territorial',
+        'Never handle during shed or when glass surfing (stressed)',
+        'Never let temperature drop below 65°F at night'
+      ],
+      diet: 'Juveniles: 80% insects (crickets, dubia roaches, hornworms), 20% vegetables. Adults: 80% vegetables (collards, mustard greens, squash), 20% insects. Dust with calcium. Fresh water.',
+      habitat: '40+ gallon tank (larger better). Basking spot with heat lamp (95-105°F), UVB tube light. Cool side 75-85°F. Branches, rocks, hides. Tile or paper substrate.',
+      enclosure: '40+ gal tank, heat lamp, UVB light, thermometers (both ends), branches, rocks, hiding spots, food dishes, water dish, substrate (tile/paper)',
+      vet: 'Exotic/reptile veterinarian. Annual exam, fecal parasite testing. No vaccinations. Watch for metabolic bone disease, parasites, respiratory infections.',
+      lifespan: '8-12 years',
+      temperature: 'Basking: 95-105°F, Cool side: 75-85°F, Night: 65-75°F',
+      supplies: ['Live insects', 'Fresh vegetables', 'Tank (40+ gal)', 'Heat lamp', 'UVB light', 'Calcium powder', 'Thermometers', 'Substrate', 'Decor']
+    },
     dog: {
       name: 'Dog',
       emoji: '🐕',
