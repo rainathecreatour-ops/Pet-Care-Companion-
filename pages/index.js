@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, PawPrint, Calendar, Clock, Scale, FileText, Plus, Trash2, Check, AlertCircle } from 'lucide-react';
+import { Heart, Calendar, Clock, FileText, Plus, Trash2, Check, AlertCircle } from 'lucide-react';
 
 export default function PetCareApp() {
   const [isLicensed, setIsLicensed] = useState(false);
@@ -11,12 +11,10 @@ export default function PetCareApp() {
   const [dietLog, setDietLog] = useState([]);
   const [sleepLog, setSleepLog] = useState([]);
   
-  // Profile form states
   const [profileForm, setProfileForm] = useState({
     name: '', type: '', age: '', breed: '', firstTime: ''
   });
   
-  // Log form states
   const [careActivity, setCareActivity] = useState('');
   const [dietMeal, setDietMeal] = useState('');
   const [dietAmount, setDietAmount] = useState('');
@@ -69,7 +67,7 @@ export default function PetCareApp() {
 
   useEffect(() => {
     if (isLicensed) saveData();
-  }, [petProfile, careLog, dietLog, sleepLog]);
+  }, [petProfile, careLog, dietLog, sleepLog, isLicensed]);
 
   const petTypes = {
     dog: {
@@ -139,7 +137,9 @@ export default function PetCareApp() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
           <div className="flex justify-center mb-6">
-            <PawPrint className="w-16 h-16 text-purple-600" />
+            <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center text-white text-3xl">
+              🐾
+            </div>
           </div>
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">Pet Care Companion</h1>
           <p className="text-center text-gray-600 mb-6">Enter your license key to activate</p>
@@ -319,7 +319,7 @@ export default function PetCareApp() {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-              <PawPrint className="text-purple-600" />
+              <span className="text-2xl">🐾</span>
               Pet Care Companion
             </h1>
             <button
