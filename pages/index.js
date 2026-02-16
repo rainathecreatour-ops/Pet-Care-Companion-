@@ -30,20 +30,20 @@ export default function PetCareApp() {
   }, []);
 
   const validateLicense = (key) => {
-    const pattern = /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+    const pattern = /^[A-Z0-9]{8}-[A-Z0-9]{8}-[A-Z0-9]{8}-[A-Z0-9]{8}$/;
     return pattern.test(key);
   };
 
   const handleLicenseSubmit = () => {
     const trimmedKey = licenseKey.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
     
-    if (trimmedKey.length === 16) {
-      const formattedKey = trimmedKey.match(/.{1,4}/g).join('-');
+    if (trimmedKey.length === 32) {
+      const formattedKey = trimmedKey.match(/.{1,8}/g).join('-');
       localStorage.setItem('petCareAppLicense', formattedKey);
       setIsLicensed(true);
       setLicenseError('');
     } else {
-      setLicenseError('License key must be 16 alphanumeric characters (dashes optional)');
+      setLicenseError('License key must be 32 alphanumeric characters (dashes optional)');
     }
   };
 
@@ -148,10 +148,10 @@ export default function PetCareApp() {
           <div>
             <input
               type="text"
-              placeholder="Enter 16-character key (dashes optional)"
+              placeholder="Enter 32-character key (dashes optional)"
               value={licenseKey}
               onChange={(e) => setLicenseKey(e.target.value.toUpperCase())}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 text-center font-mono text-lg"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 text-center font-mono text-sm"
               onKeyPress={(e) => e.key === 'Enter' && handleLicenseSubmit()}
             />
             
@@ -175,7 +175,7 @@ export default function PetCareApp() {
               Purchase your license key from Gumroad to access all features
             </p>
             <p className="text-xs text-gray-400 text-center">
-              Example keys: ABCD1234EFGH5678 or ABCD-1234-EFGH-5678
+              Example: 0CC6A9C8-0EF7467C-B4D5F871-182E65F3
             </p>
           </div>
         </div>
