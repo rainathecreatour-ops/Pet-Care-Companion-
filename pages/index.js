@@ -35,14 +35,15 @@ export default function PetCareApp() {
   };
 
   const handleLicenseSubmit = () => {
-    const trimmedKey = licenseKey.trim().toUpperCase();
+    const trimmedKey = licenseKey.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
     
-    if (validateLicense(trimmedKey)) {
-      localStorage.setItem('petCareAppLicense', trimmedKey);
+    if (trimmedKey.length === 16) {
+      const formattedKey = trimmedKey.match(/.{1,4}/g).join('-');
+      localStorage.setItem('petCareAppLicense', formattedKey);
       setIsLicensed(true);
       setLicenseError('');
     } else {
-      setLicenseError('Invalid license key format. Please use format: XXXX-XXXX-XXXX-XXXX');
+      setLicenseError('License key must be 16 alphanumeric characters (dashes optional)');
     }
   };
 
@@ -147,11 +148,10 @@ export default function PetCareApp() {
           <div>
             <input
               type="text"
-              placeholder="XXXX-XXXX-XXXX-XXXX"
+              placeholder="Enter 16-character key (dashes optional)"
               value={licenseKey}
-              onChange={(e) => setLicenseKey(e.target.value)}
+              onChange={(e) => setLicenseKey(e.target.value.toUpperCase())}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 text-center font-mono text-lg"
-              maxLength={19}
               onKeyPress={(e) => e.key === 'Enter' && handleLicenseSubmit()}
             />
             
@@ -171,8 +171,11 @@ export default function PetCareApp() {
           </div>
           
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-sm text-gray-500 text-center">
+            <p className="text-sm text-gray-500 text-center mb-3">
               Purchase your license key from Gumroad to access all features
+            </p>
+            <p className="text-xs text-gray-400 text-center">
+              Example keys: ABCD1234EFGH5678 or ABCD-1234-EFGH-5678
             </p>
           </div>
         </div>
