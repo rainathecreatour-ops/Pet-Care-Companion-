@@ -14,15 +14,3 @@
     "lucide-react": "^0.263.1"
   }
 }
-```
-
-### 2. **pages/index.js**
-Copy the artifact code I created above into this file.
-
-### 3. **.gitignore**
-```
-node_modules/
-.next/
-out/
-.env*.local
-.vercelignore
